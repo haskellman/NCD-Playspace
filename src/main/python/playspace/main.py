@@ -35,6 +35,33 @@ def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
+
+    def check_item_clicked(e):
+        e.control.checked = not e.control.checked
+        page.update()
+
+    page.appbar = ft.AppBar(
+        leading=ft.Icon(ft.icons.ACCESSIBILITY),
+        leading_width=40,
+        title=ft.Text("NCD PlaySpace"),
+        center_title=False,
+        bgcolor=ft.colors.SURFACE_VARIANT,
+        actions=[
+            ft.IconButton(ft.icons.WB_SUNNY_OUTLINED),
+            ft.IconButton(ft.icons.SUPERVISED_USER_CIRCLE_SHARP),
+            ft.PopupMenuButton(
+                items=[
+                    ft.PopupMenuItem(text="Item 1"),
+                    ft.PopupMenuItem(),  # divider
+                    ft.PopupMenuItem(
+                        text="Checked item", checked=False, on_click=check_item_clicked
+                    ),
+                ]
+            ),
+        ],
+    )
+
+
     menu = ft.GridView(
     width=800,
     height=1200,
@@ -64,4 +91,4 @@ def main(page: ft.Page):
     page.update()
 
 
-ft.app(target=main, assets_dir="assets",port=8550, view=WEB)
+ft.app(target=main, assets_dir="assets",port=8550,)
