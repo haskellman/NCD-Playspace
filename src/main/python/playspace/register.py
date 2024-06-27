@@ -46,14 +46,11 @@ def example(page):
     )
 
     def submit_form(e):
-        fullname = e.control.value
-        if (e.control.value is not None or fullname.value != ""):
-            e.control.page.dialog = success_dlg
-            success_dlg.open = True
-            e.control.page.update()
-            print(f"obrigado por se registrar! {fullname.value}")
-        else:
-            pass
+        e.control.page.dialog = success_dlg
+        success_dlg.open = True
+        e.control.page.update()
+        print(f"obrigado por se registrar! {fullname.value}")
+
 
     def close_dlg(e):
         success_dlg.open = False

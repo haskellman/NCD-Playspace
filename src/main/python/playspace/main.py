@@ -1,10 +1,12 @@
 import register
 import flet as ft
+import login
+import games
 class AppTile(ft.ListTile):
-    def __init__(self, name, view, icon_name, file_name):
+    def __init__(self, name, view, icon_name, file_name, color):
         super().__init__()
         self.view = view
-        self.bgcolor = ft.colors.BLACK
+        self.bgcolor = color
         self.title = ft.Text(name)
         self.leading = ft.Icon(icon_name)
         self.on_click = self.app_button_clicked
@@ -27,6 +29,7 @@ class AppTile(ft.ListTile):
 
 def main(page: ft.Page):
     page.title = "NCD App"
+    page.bgcolor = "#070f2b"
     page.window_full_screen = True
     page.window_resizable = True
     page.window_movable = True
@@ -40,12 +43,13 @@ def main(page: ft.Page):
         e.control.checked = not e.control.checked
         page.update()
 
+# APPBAR
     page.appbar = ft.AppBar(
         leading=ft.Icon(ft.icons.ACCESSIBILITY),
         leading_width=40,
         title=ft.Text("NCD PlaySpace"),
         center_title=False,
-        bgcolor=ft.colors.SURFACE_VARIANT,
+        bgcolor=ft.colors.BLACK,
         actions=[
             ft.IconButton(ft.icons.WB_SUNNY_OUTLINED),
             ft.IconButton(ft.icons.SUPERVISED_USER_CIRCLE_SHARP),
@@ -61,7 +65,7 @@ def main(page: ft.Page):
         ],
     )
 
-
+# GRIDVIEW
     menu = ft.GridView(
     width=800,
     height=1200,
@@ -71,10 +75,32 @@ def main(page: ft.Page):
     adaptive=True,
     controls=[
         AppTile(
-            name="Register",
+            name="Registrar",
             file_name="register.py",
             view=register.example(page),
             icon_name=ft.icons.LOGIN,
+            color="#c73d52",
+        ),
+        AppTile(
+            name="Login",
+            file_name="login.py",
+            view=login.example(page),
+            icon_name=ft.icons.LOGIN,
+            color="#f4ad42",
+        ),
+        AppTile(
+            name="Jogos",
+            file_name="games.py",
+            view=games.example(page),
+            icon_name=ft.icons.GAMES,
+            color="#bcd246"
+        ),
+        AppTile(
+            name="nao sei",
+            file_name="games.py",
+            view=login.example(page),
+            icon_name=ft.icons.GAMES,
+            color="#4289bc"
         ),
     ],
     )
