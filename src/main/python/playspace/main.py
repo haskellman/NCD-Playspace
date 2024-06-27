@@ -2,6 +2,7 @@ import register
 import flet as ft
 import login
 import games
+import time
 class AppTile(ft.ListTile):
     def __init__(self, name, view, icon_name, file_name, color):
         super().__init__()
@@ -37,7 +38,30 @@ def main(page: ft.Page):
     page.window_title_bar_buttons_hidden = True
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.splash = ft.ProgressBar(visible=False)
+    page.theme_mode = "dark"
 
+
+    def change_theme(e):
+        page.splash.visible = True
+        page.update()
+        page.theme_mode = "light" if page.theme_mode == "dark" else "dark"
+        page.splash.visible = False
+        theme_icon_button.selected = not theme_icon_button.selected
+        time.sleep(1.2)
+        page.update()
+
+    theme_icon_button = ft.IconButton(
+        ft.icons.DARK_MODE,
+        selected_icon=ft.icons.LIGHT_MODE,
+        icon_color=ft.colors.BLACK,
+        icon_size=35,
+        tooltip="change theme",
+        on_click=change_theme,
+        style=ft.ButtonStyle(
+            color={"": ft.colors.BLACK, "selected": ft.colors.WHITE},
+        ),
+    )
 
     def check_item_clicked(e):
         e.control.checked = not e.control.checked
@@ -49,10 +73,11 @@ def main(page: ft.Page):
         leading_width=40,
         title=ft.Text("NCD PlaySpace"),
         center_title=False,
-        bgcolor=ft.colors.BLACK,
+        bgcolor=ft.colors.GREY,
         actions=[
             ft.IconButton(ft.icons.WB_SUNNY_OUTLINED),
             ft.IconButton(ft.icons.SUPERVISED_USER_CIRCLE_SHARP),
+            theme_icon_button,
             ft.PopupMenuButton(
                 items=[
                     ft.PopupMenuItem(text="Item 1"),
@@ -96,7 +121,7 @@ def main(page: ft.Page):
             color="#bcd246"
         ),
         AppTile(
-            name="nao sei",
+            name="Scores",
             file_name="games.py",
             view=login.example(page),
             icon_name=ft.icons.GAMES,
