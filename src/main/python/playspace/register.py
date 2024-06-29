@@ -1,55 +1,88 @@
+from  user import User
 import flet as ft
+from flet import (Radio, 
+                  RadioGroup, 
+                  Row, 
+                  Container, 
+                  Dropdown, 
+                  TextField, 
+                  FilledButton, 
+                  AlertDialog, 
+                  TextButton, 
+                  Text, 
+                  MainAxisAlignment, 
+                  Column, 
+                  Page, 
+                  SafeArea, 
+                  KeyboardType, 
+                  dropdown, 
+                  Divider,
+                  ScrollMode,
+                  Image)
 
-fullname = ft.TextField
+USERS = []
 
 def example(page):
-    gender = ft.RadioGroup(
-        content=ft.Row(
+    gender = RadioGroup(
+        content=Row(
             [
-                ft.Radio(value="female", label="Female"),
-                ft.Radio(value="male", label="Male"),
-                ft.Radio(value="not_specified", label="Not specified"),
+                Radio(value="female", label="Female"),
+                Radio(value="male", label="Male"),
+                Radio(value="not_specified", label="Not specified"),
             ]
         )
     )
 
-    birthdate = ft.Container(
-        ft.Row(
+    birthdate = Container(
+        Row(
             controls=[
-            ft.Dropdown(
+            Dropdown(
                 label="Dia",
-                options=[ft.dropdown.Option(str(i)) for i in range(1, 32)],
+                options=[dropdown.Option(str(i)) for i in range(1, 32)],
                 width=100,
             ),
-            ft.Dropdown(
+            Dropdown(
                 label="Mes",
-                options=[ft.dropdown.Option("Janeiro"),
-                        ft.dropdown.Option("Fevereiro"),
-                        ft.dropdown.Option("Março"),
-                        ft.dropdown.Option("Abril"),
-                        ft.dropdown.Option("Maio"),
-                        ft.dropdown.Option("Junho"), 
-                        ft.dropdown.Option("Julho"), 
-                        ft.dropdown.Option("Agosto"),
-                        ft.dropdown.Option("Setembro"),
-                        ft.dropdown.Option("Outubro"),
-                        ft.dropdown.Option("Novembro"), 
-                        ft.dropdown.Option("Dezembro")],
+                options=[dropdown.Option("Janeiro"),
+                        dropdown.Option("Fevereiro"),
+                        dropdown.Option("Março"),
+                        dropdown.Option("Abril"),
+                        dropdown.Option("Maio"),
+                        dropdown.Option("Junho"), 
+                        dropdown.Option("Julho"), 
+                        dropdown.Option("Agosto"),
+                        dropdown.Option("Setembro"),
+                        dropdown.Option("Outubro"),
+                        dropdown.Option("Novembro"), 
+                        dropdown.Option("Dezembro")],
                 width=150,
             ),
-            ft.Dropdown(
+            Dropdown(
                 label="Ano",
-                options=[ft.dropdown.Option(str(i)) for i in reversed(range(1900, 2024))],
+                options=[dropdown.Option(str(i)) for i in reversed(range(1900, 2024))],
                 width=100,
             ),
         ],)
     )
 
+    cid = Image(
+        src="assets/cid.png",
+        width=200,
+        height=200,
+    )
+    def create_user(name, email, password):
+        USERS.append(User(name, email, password))
+
     def submit_form(e):
         e.control.page.dialog = success_dlg
         success_dlg.open = True
         e.control.page.update()
-        print(f"obrigado por se registrar! {fullname.value}")
+
+        if (password.value == password_confirm.value):
+            create_user(fullname.value, email.value, password.value)
+            print(f"obrigado por se registrar! {User.__str__(USERS[-1])}")
+
+        
 
 
     def close_dlg(e):
@@ -58,64 +91,43 @@ def example(page):
 
     def validate_required_text_field(e):
         if e.control.value == "":
-            e.control.error_text = "The field is required"
+            e.control.error_text = "Por favor, preencha este campo"
+            e.control.update()
+        elif password.value != password_confirm.value:
+            e.control.error_text = "As senhas não coincidem"
             e.control.update()
 
-    success_dlg = ft.AlertDialog(
-        # modal=True,
-        # title=ft.Text("Form submitted"),
-        content=ft.Text(f"Obrigado por se registrar!! {fullname.value}"),
+    success_dlg = AlertDialog(
+        modal=True,
+        title=Text("Registrado com sucesso!"),
+        content=Text(f"agora você faz parte dos NCD Gamers!!"),
         actions=[
-            ft.TextButton("OK", on_click=close_dlg),
+            TextButton("OK", on_click=close_dlg),
         ],
-        actions_alignment=ft.MainAxisAlignment.CENTER,
+        actions_alignment=MainAxisAlignment.CENTER,
         on_dismiss=lambda e: print("Modal dialog dismissed!"),
     )
 
-    submit = ft.FilledButton("Submit", on_click=submit_form)
+    submit = FilledButton("Submit", on_click=submit_form)
 
-    return ft.SafeArea(
-        ft.Column(
-            scroll=ft.ScrollMode.AUTO,
-            # alignment=ft.MainAxisAlignment.CENTER,
-            controls=[
-               fullname(
-                    label="Nome Completo",
-                    keyboard_type=ft.KeyboardType.NAME,
-                    on_blur=validate_required_text_field,
-                ),
-                ft.TextField(
-                    label="Email",
-                    keyboard_type=ft.KeyboardType.EMAIL,
-                    on_blur=validate_required_text_field,
-                ),
-                ft.TextField(
-                    label="Senha",
-                    keyboard_type=ft.KeyboardType.NUMBER,
-                    on_blur=validate_required_text_field,
-                    password=True,
-                    can_reveal_password=True,
-                ),
-                ft.TextField(
-                    label="Repetir Senha",
-                    keyboard_type=ft.KeyboardType.NUMBER,
-                    on_blur=validate_required_text_field,
-                    password=True,
-                    can_reveal_password=True,
-                ),
-                birthdate,
-
-                ft.Text("Gender:"),
-                gender,
-                ft.Divider(thickness=1),
-                ft.Row(controls=[submit], alignment=ft.MainAxisAlignment.CENTER),
+    fullname = TextField(label="Nome Completo",keyboard_type=KeyboardType.NAME,on_blur=validate_required_text_field)
+    email = TextField(label="Email", keyboard_type=KeyboardType.EMAIL, on_blur=validate_required_text_field)
+    password = TextField(label="Senha",keyboard_type=KeyboardType.NUMBER,password=True,can_reveal_password=True)
+    password_confirm = TextField(label="Repetir Senha",keyboard_type=KeyboardType.NUMBER,on_blur=validate_required_text_field,password=True,can_reveal_password=True)
+    divider = Divider(thickness=1)
+    submit_buttom = Row(controls=[submit], alignment=MainAxisAlignment.CENTER)
+    return SafeArea(
+        Column(
+            scroll=ScrollMode.AUTO,
+            # alignment=MainAxisAlignment.CENTER,
+            controls=[fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid
             ],
         ),
         expand=True,
     )
 
 
-def main(page: ft.Page):
+def main(page: Page):
     page.title = "Flet entry form example"
     page.window_width = 390
     page.window_height = 844
