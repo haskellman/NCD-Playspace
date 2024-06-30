@@ -1,5 +1,5 @@
 from copy import deepcopy
-
+import os
 import flet as ft
 from flet.utils import slugify
 import register
@@ -21,7 +21,12 @@ from flet import (
     Text,
     VerticalDivider,
     colors,
-    icons,) 
+    icons,
+    Image,
+    MainAxisAlignment,
+    CrossAxisAlignment,
+    FilledButton,
+    View) 
 
 class ResponsiveMenuLayout(Row):
     def __init__(
@@ -279,7 +284,7 @@ if __name__ == "__main__":
             leading_width=40,
             bgcolor=colors.SURFACE_VARIANT,
             actions=[
-                ft.IconButton(ft.icons.ACCOUNT_CIRCLE, on_click=lambda e: printseila),
+                ft.IconButton(ft.icons.ACCOUNT_CIRCLE, on_click=lambda e: None),
                 theme_icon_button],
         )
 
@@ -287,23 +292,34 @@ if __name__ == "__main__":
             (
                 dict(
                     icon=icons.LANDSCAPE_OUTLINED,
-                    selected_icon=icons.LANDSCAPE,
+                    selected_icon=icons.VIDEOGAME_ASSET_OUTLINED,
                     label="Jogos",
                 ),
-                create_page(
+                create_page_jogos(
                     "Jogos",
-                    "Colocar jogos aqui",
+                    "Colocar jogos aqui e uma descrição legal",
                 ),
             ),
             (
                 dict(
                     icon=icons.PORTRAIT_OUTLINED,
-                    selected_icon=icons.PORTRAIT,
+                    selected_icon=icons.LEADERBOARD_ROUNDED,
                     label="Pontuações",
                 ),
                 create_page(
                     "Pontuações",
-                    "Colocar pontuações aqui",
+                    "Colocar pontuações aqui e uma descrição",
+                ),
+            ),
+            (
+                dict(
+                    icon=icons.PORTRAIT_OUTLINED,
+                    selected_icon=icons.STAR_RATE,
+                    label="Avaliações",
+                ),
+                create_page(
+                    "Pontuações",
+                    "Colocar pontuações aqui e uma descrição",
                 ),
             ),
         ]
@@ -314,16 +330,33 @@ if __name__ == "__main__":
 
         # menu_button.on_click = lambda e: menu_layout.toggle_navigation()
 
+
+
+    def go_to_wordle(e):
+        os.system("python wordle/ncd_gamestation.py")
+
+    submit = FilledButton("Submit", on_click=print("oi"))
+    submit_buttom = Row(controls=[submit], alignment=CrossAxisAlignment.CENTER)
+    wordle = Container(margin=10,padding=10, alignment=ft.alignment.center, image_src="assets/wordle_example.png", width=300, height=300, border_radius=10, ink=True, on_click=go_to_wordle)
+    # wordle = Column(controls=[Image(src="assets/wordle_example.png", width=300, height=300),submit_buttom], alignment=MainAxisAlignment.CENTER)
+
+    def create_page_jogos(title: str, body: str): 
+        return Column(
+            [wordle,]
+        )
+
+
+        
     def create_page(title: str, body: str):
         return Row(
             controls=[
                 Column(
                     horizontal_alignment="stretch",
                     controls=[
+                        # Image(src="assets/cid.png", width=200, height=200),
                         Card(content=Container(Text(title, weight="bold"), padding=8)),
                         Text(body),
                     ],
-                    expand=True,
                 ),
             ],
             expand=True,
