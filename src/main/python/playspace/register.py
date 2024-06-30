@@ -64,12 +64,7 @@ def example(page):
             ),
         ],)
     )
-
-    cid = Image(
-        src="assets/cid.png",
-        width=200,
-        height=200,
-    )
+    
     def create_user(name, email, password):
         USERS.append(User(name, email, password))
 
@@ -116,11 +111,13 @@ def example(page):
     password_confirm = TextField(label="Repetir Senha",keyboard_type=KeyboardType.NUMBER,on_blur=validate_required_text_field,password=True,can_reveal_password=True)
     divider = Divider(thickness=1)
     submit_buttom = Row(controls=[submit], alignment=MainAxisAlignment.CENTER)
+    cid_register = Row(controls=[Image(src="assets/cid_register.png", width=400, height=400)], alignment=MainAxisAlignment.CENTER)
+    playspace = Row(controls=[Image(src="assets/playspace.png", width=400, height=400)], alignment=MainAxisAlignment.CENTER)
     return SafeArea(
         Column(
             scroll=ScrollMode.AUTO,
             # alignment=MainAxisAlignment.CENTER,
-            controls=[fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid
+            controls=[playspace,fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid_register
             ],
         ),
         expand=True,
