@@ -26,9 +26,9 @@ def example(page):
     gender = RadioGroup(
         content=Row(
             [
-                Radio(value="female", label="Female"),
-                Radio(value="male", label="Male"),
-                Radio(value="not_specified", label="Not specified"),
+                Radio(value="female", label="Feminimo"),
+                Radio(value="male", label="Masculino"),
+                Radio(value="not_specified", label="Não especificado"),
             ]
         )
     )
