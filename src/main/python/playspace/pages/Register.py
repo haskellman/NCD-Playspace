@@ -1,5 +1,7 @@
-from  user import User
+# from  User import User
 import flet as ft
+import flet_router as fr
+from .Base_url import router
 from flet import (Radio, 
                   RadioGroup, 
                   Row, 
@@ -18,11 +20,24 @@ from flet import (Radio,
                   dropdown, 
                   Divider,
                   ScrollMode,
-                  Image)
+                  Image,
+                  ElevatedButton)
+
 
 USERS = []
 
-def example(page):
+@router.route(name="register",
+              path="/register/{variable}/value"
+              )
+
+async def register(
+    router: fr.Router,
+    variable: str,
+    query:str = "you not send"
+    ):    
+    def go_back(e):
+        router.back()
+
     gender = RadioGroup(
         content=Row(
             [
@@ -32,6 +47,7 @@ def example(page):
             ]
         )
     )
+    
 
     birthdate = Container(
         Row(
@@ -65,17 +81,18 @@ def example(page):
         ],)
     )
     
-    def create_user(name, email, password):
-        USERS.append(User(name, email, password))
+    # def create_user(name, email, password):
+    #     USERS.append(User(name, email, password))
 
     def submit_form(e):
         e.control.page.dialog = success_dlg
+        go_back(e)
         success_dlg.open = True
         e.control.page.update()
 
-        if (password.value == password_confirm.value):
-            create_user(fullname.value, email.value, password.value)
-            print(f"obrigado por se registrar! {User.__str__(USERS[-1])}")
+        # if (password.value == password_confirm.value):
+        #     create_user(fullname.value, email.value, password.value)
+        #     print(f"obrigado por se registrar! {User.__str__(USERS[-1])}")
 
         
 
@@ -104,7 +121,6 @@ def example(page):
     )
 
     submit = FilledButton("Submit", on_click=submit_form)
-
     fullname = TextField(label="Nome Completo",keyboard_type=KeyboardType.NAME,on_blur=validate_required_text_field)
     email = TextField(label="Email", keyboard_type=KeyboardType.EMAIL, on_blur=validate_required_text_field)
     password = TextField(label="Senha",keyboard_type=KeyboardType.NUMBER,password=True,can_reveal_password=True)
@@ -112,24 +128,14 @@ def example(page):
     divider = Divider(thickness=1)
     submit_buttom = Row(controls=[submit], alignment=MainAxisAlignment.CENTER)
     cid_register = Row(controls=[Image(src="assets/cid_register.png", width=400, height=400)], alignment=MainAxisAlignment.CENTER)
-    playspace = Row(controls=[Image(src="assets/playspace.png", width=400, height=400)], alignment=MainAxisAlignment.CENTER)
+    playspace = Row(controls=[Image(src="assets/playspace.png", width=100, height=100)], alignment=MainAxisAlignment.CENTER)
+    back = ElevatedButton("Voltar", on_click=go_back)
     return SafeArea(
         Column(
-            scroll=ScrollMode.AUTO,
+            scroll=ScrollMode.ALWAYS,
             # alignment=MainAxisAlignment.CENTER,
-            controls=[playspace,fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid_register
+            controls=[back,playspace,fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid_register
             ],
         ),
         expand=True,
     )
-
-
-def main(page: Page):
-    page.title = "Flet entry form example"
-    page.window_width = 390
-    page.window_height = 844
-    page.add(example(main))
-
-
-if __name__ == "__main__":
-    ft.app(target=main)
