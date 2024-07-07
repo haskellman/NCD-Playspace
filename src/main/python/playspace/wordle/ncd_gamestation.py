@@ -9,7 +9,7 @@ pygame.init()
 width = 650
 heigth = 800
 screen = pygame.display.set_mode((width, heigth))
-icon = pygame.image.load("img/gameStation.png")
+icon = pygame.image.load("wordle/img/gameStation.png")
 icon = pygame.transform.scale_by(icon, 0.6)
 pygame.display.set_caption("NCD GameStation")
 pygame.display.set_icon(icon)
@@ -25,25 +25,25 @@ white = "#ffffff"
 
 screen.fill(purple)
 
-cid = pygame.image.load("img/gamestation_cid.png")
+cid = pygame.image.load("wordle/img/gamestation_cid.png")
 cid = pygame.transform.scale_by(cid, 0.3)
 cid_frame = cid.get_rect(center=(320,150))
 screen.blit(cid, cid_frame)
 
-wordle = pygame.image.load("img/wordle2.png")
+wordle = pygame.image.load("wordle/img/wordle2.png")
 wordle = pygame.transform.scale_by(wordle, 0.09)
 wordle_frame = wordle.get_rect(center=(325,300))
 screen.blit(wordle, wordle_frame)
 
 
-forca = pygame.image.load("img/forca.png")
+forca = pygame.image.load("wordle/img/forca.png")
 forca = pygame.transform.scale_by(forca, 0.09)
 forca_frame = forca.get_rect(center=(325,480))
 screen.blit(forca, forca_frame)
 
 # font e tamanho
-font_normal = pygame.font.Font("font/Montserrat-Black.otf", 36)
-font_rules = pygame.font.Font("font/Montserrat-Black.otf", 20)
+font_normal = pygame.font.Font("wordle/font/Montserrat-Black.otf", 36)
+font_rules = pygame.font.Font("wordle/font/Montserrat-Black.otf", 20)
 
 # Função para desenhar botões
 def desenhar_botao(x, y, largura, altura, texto):
@@ -70,16 +70,16 @@ def desenhar_botao(x, y, largura, altura, texto):
     screen.blit(texto_surface, texto_retangulo)
 
 def executar_wordle_classico():
-    os.system("python regras_wordle_classico.py")
-    os.system("python wordle.py")
+    os.system("python wordle/regras_wordle_classico.py")
+    os.system("python wordle/wordle.py")
 
 def executar_wordle_dueto():
-    os.system("python regras_wordle_dueto.py")
-    os.system("python dueto.py")
+    os.system("python wordle/regras_wordle_dueto.py")
+    os.system("python wordle/dueto.py")
 
 # Função para executar wordle2.py
 def executar_forca_classico():
-    os.system("python regras_forca_classico.py")
+    os.system("python wordle/regras_forca_classico.py")
 # Função para executar regras.py
 def executar_forca_dueto():
     print("ok")

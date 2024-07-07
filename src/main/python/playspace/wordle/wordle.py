@@ -45,18 +45,18 @@ blue2 = "#77c6ff"
 blue3 = "#144970"
 
 # Definição da fonte usada no NCD
-guessed_letter_font = pygame.font.Font("font/Montserrat-Black.otf", 50)
-availabe_letter_font = pygame.font.Font("font/Montserrat-Black.otf", 25)
+guessed_letter_font = pygame.font.Font("wordle/font/Montserrat-Black.otf", 50)
+availabe_letter_font = pygame.font.Font("wordle/font/Montserrat-Black.otf", 25)
 
 # screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 screen = pygame.display.set_mode((width, height))
-wordle = pygame.image.load("img/wordle.png")
+wordle = pygame.image.load("wordle/img/wordle.png")
 wordle = pygame.transform.scale_by(wordle, 0.1)
 wordle_frame = wordle.get_rect(center=(318,30))
-bg = pygame.image.load("img/background.png")
+bg = pygame.image.load("wordle/img/background.png")
 bg_frame = bg.get_rect(center=(318, 361))
 
-icon = pygame.image.load("img/w_classico.png")
+icon = pygame.image.load("wordle/img/w_classico.png")
 icon = pygame.transform.scale_by(icon, 0.6)
 pygame.display.set_caption("Wordle - NCD GameStation")
 pygame.display.set_icon(icon)
@@ -224,8 +224,8 @@ def buffer_maker():
 
 def play_again():
     pygame.draw.rect(screen, blue, (10, 70, 1000, 800))
-    play_again_font = pygame.font.Font("font/Montserrat-Black.otf", 40)
-    meanning_font = pygame.font.Font("font/Montserrat-Black.otf", 30)
+    play_again_font = pygame.font.Font("wordle/font/Montserrat-Black.otf", 40)
+    meanning_font = pygame.font.Font("wordle/font/Montserrat-Black.otf", 30)
 
     play_again_text = play_again_font.render("Aperte ENTER para jogar!", True, blue2)
     play_again_rect = play_again_text.get_rect(center=(width/2, 700))
@@ -244,12 +244,12 @@ def play_again():
         count += 40
 
     if game_result == "L":
-        lost = pygame.image.load("img/lost.png")
+        lost = pygame.image.load("wordle/img/lost.png")
         lost = pygame.transform.scale_by(lost, 0.1)
         lost_frame = lost.get_rect(center=(318, 250))
         screen.blit(lost, lost_frame)
     elif game_result == "W":
-        won = pygame.image.load("img/won.png")
+        won = pygame.image.load("wordle/img/won.png")
         won = pygame.transform.scale_by(won, 0.1)
         won_frame = won.get_rect(center=(318, 240))
         screen.blit(won, won_frame)

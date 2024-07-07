@@ -11,13 +11,13 @@ height = 800
 
 # Cria a janela
 screen = pygame.display.set_mode((width, height))
-icon = pygame.image.load("img/rules.png")
+icon = pygame.image.load("wordle/img/rules.png")
 icon = pygame.transform.scale_by(icon, 0.6)
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Pygame Page")
 
 # Carrega o wallpaper
-wallpaper = pygame.image.load("img/regras_f_classico.png")
+wallpaper = pygame.image.load("wordle/img/regras_f_classico.png")
 wallpaper = pygame.transform.scale(wallpaper, (width, height))
 
 # Define a fonte para o texto

@@ -27,15 +27,15 @@ from flet import (
     LabelPosition,
     alignment,
     ProgressBar,
+    Row,
+    MainAxisAlignment,
     ) 
 
 @router.route(name="playspace",
               path="/playspace"
               )
 
-async def playspace(router: fr.Router,
-    page: Page,
-    ): 
+async def playspace(router: fr.Router,page: Page): 
     page.splash = ProgressBar(visible=False)
     page.theme_mode = "dark"
 
@@ -51,21 +51,18 @@ async def playspace(router: fr.Router,
         time.sleep(0.4)
         page.update()
 
+    def go_to_wordle(e):
+        os.system("python wordle/ncd_gamestation.py")
+        
     switch = Switch(
         value=True,
         on_change=change_theme,
         label="Dark Theme                                                                  ",
         label_position=LabelPosition.LEFT,
     )
-
+    wordle = Container(margin=10,padding=10, alignment=alignment.center, image_src="../assets/wordle_example.png", width=300, height=300, border_radius=10, ink=True, on_click=go_to_wordle)
     back = ElevatedButton("Voltar", on_click=go_back)
-
-    def go_to_wordle(e):
-        os.system("python wordle.py")
-
-    wordle = Container(margin=10,padding=10, alignment=alignment.center, image_src="../assets/wordle_example.png", width=300, height=300, border_radius=10, ink=True, bgcolor=colors.AMBER, on_click=go_to_wordle)
-
-    dt = DataTable(
+    games_dt = DataTable(
             width=2000,
             border_radius=10,
             sort_column_index=0,
@@ -73,7 +70,6 @@ async def playspace(router: fr.Router,
             heading_row_color=ft.colors.BLACK12,
             heading_row_height=50,
             data_row_color={"hovered": "0xFFFFFF"},
-            # show_checkbox_column=True,
             divider_thickness=0,
             column_spacing=100,
         columns= [
@@ -84,55 +80,72 @@ async def playspace(router: fr.Router,
                 DataRow(
                     [DataCell(Text("Wordle")), DataCell(Text("⭐⭐⭐⭐⭐"))],
                     selected=True,
-                    on_select_changed=lambda e: go_to_game(e)
+                    on_select_changed=lambda e: go_to_wordle(e)
                 ),
-                DataRow([DataCell(Text("B")), DataCell(Text("2"))]),
+                DataRow(
+                    [DataCell(Text("Forca")), DataCell(Text("⭐⭐⭐⭐⭐"))],
+                    selected=False,
+                    on_select_changed=lambda e: print(e)
+                )
             ],
-
         )
     
     def yes_click(e):
-        game_dialog.open = False
+        wordle_dialog.open = False
         page.update()
         go_to_wordle(e)
 
     def no_click(e):
-        game_dialog.open = False
+        wordle_dialog.open = False
         page.update()
 
-    def go_to_game(e):
-        page.dialog = game_dialog
-        game_dialog.open = True
-        page.update()
-
-    wordle = Container(margin=10,padding=10, alignment=alignment.center, image_src="../assets/wordle_example.png", width=300, height=300, border_radius=10, ink=True, on_click=go_to_wordle)
 
 
-    game_dialog = AlertDialog(
+    wordle_dialog = AlertDialog(
         modal=True,
-        title=Text("Tem Certeza?"),
-        content=Text("voce tem certeza que deseja sair? "),
+        title=Text("Wordle"),
+        content=Text("Um jogo de adivinhação de palavras de cinco letras. "),
         actions=[
             wordle,
-            ElevatedButton("Yes", on_click=yes_click),
-            OutlinedButton("No", on_click=no_click),
+            Row(controls=[
+                OutlinedButton("Jogar", on_click=yes_click),
+                ElevatedButton("Cancelar", on_click=no_click),
+                ],
+                alignment=MainAxisAlignment.SPACE_AROUND,
+            ),
+        ],
+        actions_alignment="end",
+    )
+
+    forca_dialog = AlertDialog(
+        modal=True,
+        title=Text("Forca"),
+        content=Text("Descubra a palavra antes que o cid perca a cabeça. "),
+        actions=[
+            wordle,
+            Row(controls=[
+                OutlinedButton("Jogar", on_click=yes_click),
+                ElevatedButton("Cancelar", on_click=no_click),
+                ],
+                alignment=MainAxisAlignment.SPACE_AROUND,
+            ),
         ],
         actions_alignment="end",
     )
     
-    t = Tabs(
+    tabs = Tabs(
         selected_index=1,
         animation_duration=300,
         indicator_tab_size=True,
         divider_color = colors.WHITE,
-        
+
         tabs=[
             Tab(
                 text="Jogos",
                 icon=icons.GAMES,
                 content=Container(
                     Column(
-                        [dt,back]
+                        [games_dt,back]
                     ),
                 ),
             ),
@@ -157,7 +170,7 @@ async def playspace(router: fr.Router,
         ],
         expand=1,
         )
-    return SafeArea(t,back
+    return SafeArea(tabs,back
     )
 
 
