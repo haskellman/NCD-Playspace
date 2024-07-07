@@ -1,1 +1,10 @@
+target/
+target/reports/
+target/reports/unittest
+target/reports/
+target/dist/ncd-playspace-1.0.dev0/playspace/main.py
+target/dist/
+
 **/__pycache__/
+
+**/src/unittest/

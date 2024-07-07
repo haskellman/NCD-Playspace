@@ -14,7 +14,6 @@ from flet import (Radio,
                   Text, 
                   MainAxisAlignment, 
                   Column, 
-                  Page, 
                   SafeArea, 
                   KeyboardType, 
                   dropdown, 
@@ -93,8 +92,6 @@ async def register(
         # if (password.value == password_confirm.value):
         #     create_user(fullname.value, email.value, password.value)
         #     print(f"obrigado por se registrar! {User.__str__(USERS[-1])}")
-
-        
 
 
     def close_dlg(e):
