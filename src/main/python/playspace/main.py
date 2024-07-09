@@ -6,6 +6,7 @@ from pages.Base_url import router
 from pages.Home import home
 from pages.Register import register
 from pages.Playspace import playspace
+from pages.Assesment import assesment
 
 
 def main(page:Page):
@@ -40,7 +41,7 @@ def main(page:Page):
     # app configurations
     page.title = "NCD Playspace"
     page.window_width = 440
-    page.window_height = 844
+    page.window_height = 1044
     page.scroll = ScrollMode.AUTO
     
     # configurate router to navigate between pages

@@ -2,6 +2,7 @@ import flet as ft
 import flet_router as fr
 from .Base_url import router
 import webbrowser
+from .Register import USERS
 from flet import (KeyboardType,
                   Row,
                   TextField,
@@ -51,7 +52,7 @@ async def home(router: fr.Router, page: Page):
     instagram_buttom = Row(controls=[OutlinedButton(text="Instagram",icon=icons.CAMERA_ALT_OUTLINED, on_click=lambda e: webbrowser.open('https://www.instagram.com/ncd_ufes/'))], alignment=MainAxisAlignment.CENTER)
     blank = Row(controls=[Text("")])
 
-    return ft.SafeArea(
+    return SafeArea(
         Column(
             scroll=ScrollMode.ADAPTIVE,
             # alignment=MainAxisAlignment.CENTER,

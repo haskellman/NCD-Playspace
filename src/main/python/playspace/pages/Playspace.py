@@ -6,11 +6,9 @@ import flet_router as fr
 # from .tabs.Wordle import games
 from .Base_url import router
 from flet import (
-    AppBar, 
     Column, 
     Container, 
     ElevatedButton, 
-    IconButton,
     Page,
     colors,
     icons,
@@ -45,6 +43,16 @@ async def playspace(router: fr.Router,page: Page):
     def go_back(e):
         router.back()
 
+    def go_assesment(e):
+        e.control.page.update()
+        router.go_push(
+            fr.Location(
+                name="assesment",
+                params={"variable":e.control.cells[0].content.value},
+                query={"query_variable":"world"}
+            )
+        )
+        
     # function to change the theme
     def change_theme(e):
         page.splash.visible = True
@@ -70,19 +78,13 @@ async def playspace(router: fr.Router,page: Page):
 
     wordle_img = Container(margin=10,padding=10, alignment=alignment.center, image_src="../assets/wordle_example.png", width=300, height=300, border_radius=10, ink=True, on_click= lambda e: print("Wordle Clicked"))
     forca_img = Container(margin=10,padding=10, alignment=alignment.center, image_src="../assets/forca_example.png", width=300, height=300, border_radius=10, ink=True, on_click= lambda e: print("Forca Clicked"))
-    back_buttom = ElevatedButton("Voltar", on_click=go_back)
+    logout_buttom = ElevatedButton("Log out", on_click=go_back)
     game_list = []
-    game1 = Game('Forca', 3, ['seila', 'palavras'])
-    game2 = Game('Wordle', 5, ['puzzle', 'palavras'])
+    game1 = Game('Forca',['seila', 'palavras'])
+    game2 = Game('Wordle', ['puzzle', 'palavras'])
 
     game_list.append(game1)
     game_list.append(game2)
-
-    # print(len(game_list))
-    # for elem in game_list:
-    #     print(elem.name)
-    #     print(elem.record)
-
 
     # games data table
     games_dt = DataTable(
@@ -103,12 +105,12 @@ async def playspace(router: fr.Router,page: Page):
             # content
             rows=[
                 DataRow(
-                    [DataCell(Text("Forca")), DataCell(Text("⭐⭐⭐⭐⭐"), DataCell(Text("Seila, Aventura")))],
+                    [DataCell(Text(value=game1.name)), DataCell(Text("****")), DataCell(Text(game1.tags))],
                     selected=False,
                     on_select_changed=lambda e: open_forca_dialog(e)
                 ),
                 DataRow(
-                    [DataCell(Text(value=game1.name)), DataCell(Text("⭐⭐⭐⭐⭐"), DataCell(Text("Puzzle, Palavras")))],
+                    [DataCell(Text(value=game2.name)), DataCell(Text("*****")), DataCell(Text(game2.tags))],
                     selected=True,
                     on_select_changed=lambda e: open_wordle_dialog(e)
                 )
@@ -143,39 +145,42 @@ async def playspace(router: fr.Router,page: Page):
         actions_alignment="end",
     )
 
-    # def dropdown_changed(e):
-    #     t.value = f"Dropdown changed to {dd.value}"
-    #     games_dt.rows.remove(game1.name)
-    #     page.update()
-
-    # t = ft.Text()
-    
-    # dd = ft.Dropdown(
-    #     on_change=dropdown_changed,
-    #     options=[
-    #         ft.dropdown.Option("puzzle"),
-    #         ft.dropdown.Option("palavras"),
-    #         ft.dropdown.Option("seila"),
-    #     ],
-    #     width=200,
-    # )
-    def showhidename(e):
+    # function to show/hide list of games by tag
+    def show_hide_game(e):
         value = e.control.value
         keyword = str(e.control.label).lower()
-        if value == False:
-            for i, game in enumerate(score_dt.rows):
-                if any(keyword in li for li in(str(game.cells[2].content)).split(",")):
-                    score_dt.rows[i].visible = False
-                    page.update()
-        else:
-            for i, game in enumerate(score_dt.rows):
-                if any(keyword in li for li in(str(game.cells[2].content)).split(",")):
-                    score_dt.rows[i].visible = True        
-                    page.update()
-                    
-    fill_puzzle = Checkbox(label="Puzzle", value=True, on_change=showhidename)
-    fill_aventura = Checkbox(label="Aventura", value=True, on_change=showhidename)
-    fill_palavras = Checkbox(label="Palavras", value=True, on_change=showhidename)
+        tab = tabs.selected_index
+        match tab:
+            case 0:
+                if value == False:
+                    for i, game in enumerate(games_dt.rows):
+                        # verify if the keyword is in the list of tags
+                        if any(keyword in li for li in(str(game.cells[2].content)).split(",")):
+                            games_dt.rows[i].visible = False
+                            page.update()
+                else:
+                    for i, game in enumerate(games_dt.rows):
+                        # verify if the keyword is in the list of tags
+                        if any(keyword in li for li in(str(game.cells[2].content)).split(",")):
+                            games_dt.rows[i].visible = True        
+                            page.update()                         
+            case 1:
+                if value == False:
+                    for i, game in enumerate(score_dt.rows):
+                        # verify if the keyword is in the list of tags
+                        if any(keyword in li for li in(str(game.cells[1].content)).split(",")):
+                            score_dt.rows[i].visible = False
+                            page.update()
+                else:
+                    for i, game in enumerate(score_dt.rows):
+                        # verify if the keyword is in the list of tags
+                        if any(keyword in li for li in(str(game.cells[1].content)).split(",")):
+                            score_dt.rows[i].visible = True        
+                            page.update()
+       
+    fill_puzzle = Checkbox(label="Puzzle", value=True, on_change=show_hide_game)
+    fill_aventura = Checkbox(label="Aventura", value=True, on_change=show_hide_game)
+    fill_palavras = Checkbox(label="Palavras", value=True, on_change=show_hide_game)
     fill_games = Row(controls=[fill_puzzle, fill_aventura, fill_palavras], alignment=MainAxisAlignment.CENTER)
 
 # --------------------------------- Pontuacao ---------------------------------
@@ -191,28 +196,26 @@ async def playspace(router: fr.Router,page: Page):
             column_spacing=100,
         columns= [
             DataColumn(Text("Nome")),
-            DataColumn(Text("Score")),
+            # DataColumn(Text("Score")),
             DataColumn(Text("Gêneros")),
         ],
             # content
             rows=[
             ],
         )   
-    	# PUSH DATA TO DATATABLE
          
-    def open_game_dialog(e:ft.ControlEvent):
-        
-        print(e.control.cells[0].content.value)
+    # def open_game_dialog(e:ft.ControlEvent):
+    #     print(e.control.cells[0].content.value)
 
     for game in game_list:
         score_dt.rows.append(
         DataRow(
             cells=[
                 DataCell(Text(game.name)),
-                DataCell(Text(game.record)),
+                # DataCell(Text(game.record)),
                 DataCell(Text(game.tags)),
             ],
-            on_select_changed=lambda e: open_game_dialog(e)
+            on_select_changed=lambda e: go_assesment(e)
         )
     )
 
@@ -256,7 +259,7 @@ async def playspace(router: fr.Router,page: Page):
                 icon=icons.GAMES,
                 content=Container(
                     Column(
-                        [fill_games,games_dt,back_buttom]
+                        [fill_games,games_dt]
                     ),
                 ),
             ),
@@ -265,7 +268,7 @@ async def playspace(router: fr.Router,page: Page):
                 icon=icons.STAR,
                 content=Container(
                     Column(
-                        [fill_games,score_dt,back_buttom]
+                        [fill_games,score_dt]
                     ),
                 ),
             ),
@@ -274,19 +277,12 @@ async def playspace(router: fr.Router,page: Page):
                 icon=icons.SETTINGS,
                 content=Container(
                     Column(
-                        [switch_theme,back_buttom]
+                        [switch_theme,logout_buttom]
                     ),
                 ),
             ),
         ],
         expand=1,
         )
-    return SafeArea(tabs,back_buttom
+    return SafeArea(tabs
     )
-
-
-
-
-
-
-    
