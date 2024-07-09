@@ -9,6 +9,7 @@ from pages.Playspace import playspace
 
 
 def main(page:Page):
+    # function to handle the window event to prevent the user from closing the window accidentally
     def window_event(e):
         if e.data == "close":
             page.dialog = confirm_dialog
@@ -25,6 +26,7 @@ def main(page:Page):
         confirm_dialog.open = False
         page.update()
 
+    # dialog to confirm if the user wants to close the window
     confirm_dialog = AlertDialog(
         modal=True,
         title=Text("Tem Certeza?"),
@@ -35,16 +37,17 @@ def main(page:Page):
         ],
         actions_alignment="end",
     )
+    # app configurations
     page.title = "NCD Playspace"
-
     page.window_width = 440
     page.window_height = 844
     page.scroll = ScrollMode.AUTO
     
+    # configurate router to navigate between pages
     app_router = fr.Router.mount(
         page,
         routes=router.routes  
     )
     app_router.go_root("/")
 
-app(main,view=AppView.WEB_BROWSER,port=5050)
+app(main,view=AppView.FLET_APP)

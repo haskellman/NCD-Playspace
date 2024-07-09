@@ -1,10 +1,7 @@
-class Game:
-    def __init__(self, name: str, record: int, link: str, tag: list[str] = None):
-        self.name = name
-        self.record = record
-        self.link = link
-        self.tag = tag
-        pass
+from dataclasses import dataclass
 
-    def __str__(self):
-        return f"Game({self.name}, {self.record}, {self.link}, {self.type})"
+@dataclass
+class Game:
+    name: str
+    record: int
+    tags: list
