@@ -8,6 +8,7 @@ from pages.Register import register
 from pages.Playspace import playspace
 
 
+# main app
 def main(page:Page):
     def window_event(e):
         if e.data == "close":
