@@ -26,7 +26,7 @@ na versão web que tem alguns bugs visuais
 3. Run!
 ```flet -r main.py```
 
-## Desenvolvedor
+## Desenvolvedores
 - Israel dos Santos Candeias, Gabriel Paschoal
 
 ### Limitações Relevantes:
