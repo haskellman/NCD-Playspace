@@ -30,7 +30,10 @@ na versão web que tem alguns bugs visuais
 - Israel dos Santos Candeias, Gabriel Paschoal
 
 ### Limitações Relevantes:
-- 
+- Os jogos não estão na nuvem, eles dependem do python e pygame para rodarem
 
 ### Propostas de Melhoria:
+- Usar um framework para autenticação mais confiavel
+- Utilizar flask para banco de dados
+- Colocar os jogos do pygame na nuvem
 
