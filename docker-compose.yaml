@@ -1,0 +1,6 @@
+services:
+  playspace-web:
+    build: .
+    restart: always
+    ports:
+      - "3333:1234"
