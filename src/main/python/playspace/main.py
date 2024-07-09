@@ -9,6 +9,7 @@ from pages.Playspace import playspace
 from pages.Assesment import assesment
 
 
+# main app
 def main(page:Page):
     # function to handle the window event to prevent the user from closing the window accidentally
     def window_event(e):
