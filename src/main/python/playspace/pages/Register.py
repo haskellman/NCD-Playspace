@@ -24,7 +24,7 @@ from flet import (Radio,
                   ElevatedButton)
 
 
-USERS = list[User]
+USERS = []
 
 @router.route(name="register",
               path="/register/{variable}/value"
@@ -114,11 +114,13 @@ async def register(
     )
 
     def submit_form(e):
-        USERS.append(User(fullname.value, email.value, password.value))
-        e.control.page.dialog = success_dlg
-        go_back(e)
-        success_dlg.open = True
-        e.control.page.update()
+        if (password.value == password_confirm.value):
+            user = User(fullname.value, email.value, password.value)
+            USERS.append(user)
+            e.control.page.dialog = success_dlg
+            go_back(e)
+            success_dlg.open = True
+            e.control.page.update()
         
     submit = FilledButton("Submit", on_click=submit_form)
     fullname = TextField(label="Nome Completo",keyboard_type=KeyboardType.NAME,on_blur=validate_required_text_field)
@@ -128,7 +130,7 @@ async def register(
     divider = Divider(thickness=1)
     submit_buttom = Row(controls=[submit], alignment=MainAxisAlignment.CENTER)
     cid_register = Row(controls=[Image(src="assets/cid_register.png", width=400, height=400)], alignment=MainAxisAlignment.CENTER)
-    playspace = Row(controls=[Image(src="assets/playspace.png", width=100, height=100)], alignment=MainAxisAlignment.CENTER)
+    # playspace = Row(controls=[Image(src="assets/playspace.png", width=100, height=100)], alignment=MainAxisAlignment.CENTER)
     back = ElevatedButton("Voltar", on_click=go_back)
 
 
@@ -136,7 +138,7 @@ async def register(
         Column(
             scroll=ScrollMode.ALWAYS,
             # alignment=MainAxisAlignment.CENTER,
-            controls=[back,playspace,fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid_register
+            controls=[back,fullname,email,password,password_confirm,birthdate, Text("Gênero:"), gender, divider, submit_buttom,cid_register
             ],
         ),
         expand=True,

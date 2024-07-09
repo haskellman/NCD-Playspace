@@ -42,7 +42,6 @@ def main(page:Page):
     page.title = "NCD Playspace"
     page.window_width = 440
     page.window_height = 1044
-    page.scroll = ScrollMode.AUTO
     
     # configurate router to navigate between pages
     app_router = fr.Router.mount(

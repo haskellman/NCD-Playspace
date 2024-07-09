@@ -38,9 +38,19 @@ async def home(router: fr.Router, page: Page):
         router.go_push(
             fr.Location(
                 name="playspace"
-                # params={"page":page},
             )
         )
+
+    def login(e):
+        for user in USERS:
+            if (email.value, password.value) == (user.email, user.password):
+                print("Login efetuado com sucesso")
+                e.control.page.update()
+                router.go_push(
+                    fr.Location(
+                        name="playspace"
+                    )
+                )
 
     register_buttom = Row(controls=[ElevatedButton("Registre-se", on_click=go_register)], alignment=MainAxisAlignment.CENTER)
     submit_buttom = Row(controls=[FilledButton("Entrar", on_click=go_playspace), FilledButton(text="Entrar como Convidado", on_click=go_playspace)], alignment=MainAxisAlignment.CENTER)
